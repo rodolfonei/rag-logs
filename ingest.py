@@ -6,6 +6,12 @@ from sentence_transformers import SentenceTransformer
 
 load_dotenv()
 
+conn = pymssql.connect(
+    server = os.getenv("SERVER"),
+    database = os.getenv("DB_NAME"),
+    as_dict = True
+)
+
 def get_log_tables(conn):
     cur = conn.cursor()
     cur.execute("""
@@ -14,10 +20,11 @@ def get_log_tables(conn):
     """)
     return [row["TABLE_NAME"] for row in cur.fetchall()]
 
-conn = pymssql.connect(
-    server = os.getenv("SERVER"),
-    database = os.getenv("DB_NAME"),
-    as_dict = True
-)
+def serialize_row(row, columns):
+    return " | ".join(f"{col}={val}" for col, val in zip(columns, row) if val is not None)
+
+def ingest():
+    
+
 print(get_log_tables(conn))
 
