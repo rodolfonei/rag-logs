@@ -1,3 +1,4 @@
 pymssql
 chromadb
 sentence-transformers
+ollama
